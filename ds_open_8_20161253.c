@@ -30,6 +30,7 @@ void traversal(thread_pointer tree) {
 		if (temp == NULL) break;
 		printf("%d\n", temp->data);
 		temp = insucc(temp);
+		//temp = temp->right_child;
 	}
 }
 
@@ -62,7 +63,9 @@ void insertion(thread_pointer tree, char x, int p, int c) {
 		parent->left_thread = FALSE;
 		if (!child->left_thread) {
 			temp = child->left_child;
+			while (temp->right_child != parent) temp = insucc(temp);
 			temp->right_child = child;
+			//printf("temp: %d temp->right_hcild: %d \n", temp->data, temp->right_child->data);
 		}
 	}
 	else {
@@ -106,6 +109,15 @@ int main() {
 
 	traversal(tree);
 
+	while (tree != NULL) tree = tree->left_child;
+	thread_pointer temp;
+	while (tree != NULL) {
+		temp = tree;
+		tree = insucc(tree);
+		free(temp);
+	}
+	free(tree);
+	
 	fclose(fp);
 	return 0;
 }
